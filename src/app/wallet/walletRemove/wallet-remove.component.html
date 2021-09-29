@@ -1,0 +1,51 @@
+<h3>Rimuovi movimento di cassa</h3>
+<!-- <div class="spinner-container" *ngIf="dataSource.loading$ | async">
+    <mat-spinner></mat-spinner>
+</div> -->
+<mat-table [dataSource]="dataSource" class="mat-elevation-z2">
+
+    <ng-container matColumnDef="Delete">
+        <mat-header-cell *matHeaderCellDef class="delete-cell"><mat-icon class="mat-18">delete</mat-icon></mat-header-cell>
+        <mat-cell 
+                class="delete-cell"
+                  *matCellDef="let element">
+                  <button mat-icon-button color="primary" (click)="delete(element.id)">
+                    <mat-icon class="mat-18">delete</mat-icon>
+                </button>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Name">
+        <mat-header-cell *matHeaderCellDef>Description</mat-header-cell>
+        <mat-cell *matCellDef="let element">{{element.name}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Category">
+        <mat-header-cell *matHeaderCellDef>Category</mat-header-cell>
+        <mat-cell class="description-cell"
+                  *matCellDef="let element">{{element.category}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Date">
+        <mat-header-cell *matHeaderCellDef>Date</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let element">{{element.date | date: 'dd-MM-yyyy HH:mm'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="Value">
+        <mat-header-cell *matHeaderCellDef>Value</mat-header-cell>
+        <mat-cell class="duration-cell"
+                  *matCellDef="let element">{{element.value}}
+                </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns;">
+    </mat-row>
+
+</mat-table>
+<mat-paginator  [length]="itemCount"
+                [pageSize]="5"
+                [pageSizeOptions]="[5, 10]"
+                aria-label="Select page">
+</mat-paginator>

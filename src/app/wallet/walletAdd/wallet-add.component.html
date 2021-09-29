@@ -1,0 +1,50 @@
+<h3>Aggiungi movimento di cassa</h3>
+<form (submit)="saveChanges()" [formGroup]="form">
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Descrizione</mat-label>
+            <input formControlName="Name" matInput type="text" [(ngModel)]="this.descr" name="descr">
+            <button *ngIf="this.descr" matSuffix mat-icon-button aria-label="Clear"  (click)="this.descr=''">
+                <mat-icon>close</mat-icon>
+            </button>
+            <mat-error *ngIf="form.invalid">{{getErrorMessageFieldName()}}</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Valore</mat-label>
+            <input formControlName="Value" matInput type="number" [(ngModel)]="value" name="value">
+            <mat-error *ngIf="form.invalid">{{getErrorMessageFieldName()}}</mat-error>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Choose a date</mat-label>
+            <input formControlName="Date" matInput [matDatepicker]="picker" dateTimeFormat="dd/MM/yyyy hh:mm:ss">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker [startAt]="startDate"></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <input type="text"
+                    formControlName="Category"
+                placeholder="Scegliere categoria"
+                aria-label="Category"
+                matInput
+                [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let category of filteredCategories | async" [value]="category">
+                {{category}}
+            </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+    </div>
+      <div>
+        <button mat-flat-button color="primary" class="example-full-width" appearance="outline" [disabled]="form.invalid">
+            Salva</button>
+        <a mat-stroked-button routerLink="">Annulla</a>
+      </div>  
+</form>
+

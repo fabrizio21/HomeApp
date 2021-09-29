@@ -1,0 +1,21 @@
+.message-dialog-container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.icon {
+    width:25vw;
+}
+  
+.message {
+    width:75vw;
+}
+
+
+.icon-display {
+    transform: scale(2);
+ }
+ button {
+     margin-right: 1rem;
+ }

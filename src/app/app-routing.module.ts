@@ -1,7 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HomeComponent } from './home/home.component';
+import { WalletAddComponent } from './wallet/walletAdd/wallet-add.component';
+import { WalletEditComponent } from './wallet/walletEdit/wallet-edit.component';
+import { WalletRemoveComponent } from './wallet/walletRemove/wallet-remove.component';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {path: '', component: HomeComponent },
+  {path: 'wallet-add', component: WalletAddComponent},
+  {path: 'wallet-remove', component: WalletRemoveComponent},
+  {path: 'wallet-edit', component: WalletEditComponent}
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

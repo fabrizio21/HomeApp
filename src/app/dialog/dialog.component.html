@@ -1,0 +1,19 @@
+<div class="dialog-container">
+    <h2 mat-dialog-title>{{title}}</h2>
+
+    <mat-dialog-content [formGroup]="form">
+
+        <mat-form-field>
+            <div class="message-dialog-container">
+                <div class="icon"><mat-icon class="icon-display">{{icon}}</mat-icon></div>
+                <div class="message">{{message}}</div>
+            </div>
+        </mat-form-field>
+    
+    </mat-dialog-content>
+
+    <mat-dialog-actions>
+        <button mat-stroked-button appearance="outline" (click)="ok()">Ok</button>
+        <button mat-stroked-button appearance="outline" color="primary" (click)="cancel()">Cancel</button>
+    </mat-dialog-actions>
+</div>
