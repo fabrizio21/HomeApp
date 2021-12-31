@@ -1,0 +1,148 @@
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Meteo per {{currentWeather.name}}</h3>
+    <div class="card-tools">
+      <button type="button" class="btn btn-sm btn-default" data-toggle="tooltip" title="Date range" (click)="searchWeather(this.loc)">
+        <i class="fas fa-redo"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="card-body p-0">
+    <table class="table table-condensed">
+      <tbody>
+        <tr>
+          <td><img src="http://openweathermap.org/img/wn/{{currentWeather.weather[0]?.icon}}@2x.png"/></td>
+          <td style="width: 1em;"></td>
+          <td>
+            <h1>{{currentWeather.main?.temp - 273.15 | number:'1.0-0'}}<sup>o</sup>C</h1>
+            <span>{{currentWeather.main?.temp_min - 273.15 | number:'1.0-0'}}<sup>o</sup>C</span> - 
+            <span>{{currentWeather.main?.temp_max - 273.15 | number:'1.0-0'}}<sup>o</sup>C</span>
+          </td>
+        </tr>
+        <tr>
+          <td>Nuvolosità:</td>
+          <td><i class="fas fa-cloud"></i></td>
+          <td><span class="badge">{{currentWeather.clouds?.all}}%</span></td>
+        </tr>
+        <tr>
+          <td>Umidità:</td>
+          <td><i class="fas fa-tint"></i></td>
+          <td><span class="badge">{{currentWeather.main?.humidity}}%</span></td>
+        </tr>
+        <tr>
+          <td>Pressione:</td>
+          <td><i class="fas fa-angle-double-down"></i></td>
+          <td><span class="badge">{{currentWeather.main?.pressure}} mbar</span></td>
+        </tr>
+        <tr>
+          <td>Alba:</td>
+          <td><i class="fas fa-sun"></i></td>
+          <td><span class="badge">{{currentWeather.sys?.sunrise*1000 | date:'HH:mm'}}</span></td>
+        </tr>
+        <tr>
+          <td>Tramonto:</td>
+          <td><i class="fas fa-moon"></i></td>
+          <td><span class="badge">{{currentWeather.sys?.sunset*1000 | date:'HH:mm'}}</span></td>
+        </tr>
+        <tr>
+          <td>Visiblità:</td>
+          <td><i class="fas fa-eye"></i></td>
+          <td><span class="badge">{{currentWeather.visibility}} m</span></td>
+        </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!--
+  <h1 class="center" *ngIf='resultFound()'>Current weather for {{currentWeather.name}}</h1>
+  <table *ngIf='resultFound()'>
+    <tbody>
+      <tr>
+          <td>
+              <img src="http://openweathermap.org/img/wn/{{currentWeather.weather[0]?.icon}}@2x.png"/>
+              <span>{{currentWeather.weather[0]?.description}}</span>
+          </td>
+        </tr>
+      
+      <tr>
+        <td>
+          <h3>Current Temperature:</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.main?.temp - 273.15 | number:'1.0-0'}}<sup>o</sup>C</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Maximum Temperature:</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.main?.temp - 273.15 | number:'1.0-0'}}<sup>o</sup>C</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Minimum Temperature:</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.main?.temp_min - 273.15 | number:'1.0-0'}}<sup>o</sup>C</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Clouds:</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.clouds?.all}}%</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Humidity</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.main?.humidity}}%</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Pressure</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.main?.pressure}}mb</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Sunrise</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.sys?.sunrise*1000 | date:'long'}}</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Sunset</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.sys?.sunset*1000 | date:'long'}}</h3>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Visibility</h3>
+        </td>
+        <td>
+          <h3>{{currentWeather.visibility}}m</h3>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf='!resultFound()'>
+    <h1 class="center">{{msg || 'Failed to get weather.'}}</h1>
+  </div>
+</div>
+-->

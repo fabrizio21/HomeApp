@@ -16,6 +16,13 @@ import {MatDialogModule} from '@angular/material/dialog';
 
 import { MatPaginatorModule } from "@angular/material/paginator";
 
+import {MatSidenavModule} from "@angular/material/sidenav"
+
+import {MatDividerModule} from "@angular/material/divider"
+
+import {MatListModule} from '@angular/material/list';
+
+
 @NgModule({
   declarations: [],
   exports: [
@@ -29,7 +36,10 @@ import { MatPaginatorModule } from "@angular/material/paginator";
     MatAutocompleteModule,
     MatFormFieldModule,
     MatDialogModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatSidenavModule,
+    MatDividerModule,
+    MatListModule
   ],
   imports: [
     CommonModule

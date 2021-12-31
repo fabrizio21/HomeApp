@@ -1,0 +1,522 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Calcolatore Turni Pulizie</h1>
+      </div><!-- /.col -->
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="#">Home</a></li>
+          <li class="breadcrumb-item active">C.T.P.</li>
+        </ol>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+
+<section class="content">
+  <div class="container-fluid">
+    <div class="row" *ngIf="!computed">
+      <section class="col-lg-9 col-sm-2 col-md-2">
+        <div class="card">
+          <div class="card-header">
+            <h3 class="card-title">Lista famiglie (ordinabile):</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+            <div class="col-lg-4">
+              <mat-label>Selezionare le famiglie:</mat-label>
+              <div cdkDropList class="families-list" (cdkDropListDropped)="drop($event)">
+                  <div class="family-box" *ngFor="let family of families" cdkDrag>
+                      {{family.Name}}
+                  </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <mat-label>Selezionare il giorno:</mat-label>
+              <mat-selection-list #days [multiple]="false" class="families-list">
+                <mat-list-option *ngFor="let day of daysOfWeek" [selected]="day.selected" (click)="onDayChanged(days)" [value]="day.index">
+                {{day.name}}
+                </mat-list-option>
+            </mat-selection-list>
+            </div>
+            <div class="col-lg-4">
+              <mat-label>Selezionare l'anno:</mat-label>
+              <mat-form-field class="example-full-width" appearance="fill" style="display: flex; justify-content: center">
+                <input matInput placeholder="Ex. {{this.selectedYear}}" value="{{this.selectedYear}}" #year (keyup)="getValue(year.value)" />
+              </mat-form-field>
+              <button mat-flat-button style="width: 100%!important; margin-top: 1em;" color="primary" (click)="calculateShifts()">Go!</button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</section>
+
+<section class="content">
+  <div class="container-fluid">
+
+    <div class="card" *ngIf="computed" > <!---->
+      <div class="card-header">
+        <h3 class="card-title">Turni Pulizie {{selectedYear}}</h3>
+        <div class="card-tools">
+          <button type="button" class="btn btn-sm btn-default" data-toggle="tooltip" title="Stampa il documento">
+            <i class="fas fa-download"></i>
+          </button>
+          <button type="button" class="btn btn-sm btn-default" data-toggle="tooltip" title="Stampa il documento">
+            <i class="fas fa-print"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-body" #cleaningShiftTable>
+          <div class="text-center">
+              <h3>Turni Pulizie {{selectedYear}}</h3>
+          </div>
+        <div class="row row-reduced">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Gennaio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[0].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[0].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[1].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[1].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[2].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[2].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[3].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[3].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[4].family == ''}">{{this.cleaningShifts[4].day | date: 'dd' }}</th>
+                  <td>{{this.cleaningShifts[4].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Febbraio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[5].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[5].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[6].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[6].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[7].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[7].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[8].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[8].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[9].family == ''}">{{this.cleaningShifts[9].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[9].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Marzo</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[10].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[10].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[11].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[11].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[12].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[12].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[13].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[13].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[14].family == ''}">{{this.cleaningShifts[14].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[14].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row row-reduced">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Aprile</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[15].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[15].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[16].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[16].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[17].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[17].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[18].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[18].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[19].family == ''}">{{this.cleaningShifts[19].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[19].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Maggio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[20].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[20].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[21].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[21].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[22].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[22].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[23].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[23].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[24].family == ''}">{{this.cleaningShifts[24].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[24].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Giugno</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[25].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[25].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[26].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[26].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[27].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[27].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[28].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[28].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[29].family == ''}">{{this.cleaningShifts[29].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[29].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row row-reduced">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col"colspan="3">Luglio</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[30].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[30].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[31].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[31].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[32].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[32].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[33].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[33].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[34].family == ''}">{{this.cleaningShifts[34].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[34].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Agosto</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[35].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[35].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[36].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[36].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[37].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[37].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[38].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[38].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[39].family == ''}">{{this.cleaningShifts[39].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[39].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Settembre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[40].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[40].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[41].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[41].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[42].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[42].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[43].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[43].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[44].family == ''}">{{this.cleaningShifts[44].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[44].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row row-reduced">
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Ottobre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[45].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[45].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[46].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[46].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[47].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[47].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[48].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[48].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[49].family == ''}">{{this.cleaningShifts[49].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[49].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Novembre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[50].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[50].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[51].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[51].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[52].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[52].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[53].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[53].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[54].family == ''}">{{this.cleaningShifts[54].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[54].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <table class="table table-bordered">
+              <thead>
+                <tr class="month-header">
+                  <th scope="col" colspan="3">Dicembre</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[55].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[55].family}}</td>
+                  <td class="check-cell"></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[56].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[56].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[57].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[57].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell">{{this.cleaningShifts[58].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[58].family}}</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <th scope="row" class="day-cell" [ngClass]="{'hidden': this.cleaningShifts[59].family == ''}">{{this.cleaningShifts[59].day | date: 'dd'}}</th>
+                  <td>{{this.cleaningShifts[59].family}}</td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    </section>  
+

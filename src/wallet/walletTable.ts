@@ -28,6 +28,7 @@ export class WalletDataSource extends DataSource<walletItemDTO> {
         this.loadingSubject.complete();
     }
 
+    /*
     findWalletItem(
         name = '', 
         sortOrder = 'asc',
@@ -48,5 +49,6 @@ export class WalletDataSource extends DataSource<walletItemDTO> {
             this.length = walletItems.length;
             console.log('cristo: ' + walletItems.length);
         });
-    }       
+    }
+    */       
 }

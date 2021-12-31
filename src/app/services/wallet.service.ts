@@ -1,8 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/internal/Observable';
+import { of, Observable, pipe } from 'rxjs';
+import { catchError, delay, map } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { walletItemDTO, walletItemCreationDTO } from 'src/wallet/wallet.model';
+import { Page, PageRequest } from '../page';
+
+
+export interface WalletItemQuery{
+  search: string;
+  registration?: Date;
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +21,13 @@ export class WalletService {
 
   constructor(private http: HttpClient) { }
 
+  // endpoint del servizio wbe
   private apiURL = environment.apiURL + '/wallet';
+
+  // lista degli oggetti di portafoglio (ingressi/uscite)
+  private items: walletItemDTO[] = [];
+
+  private filteredItems: walletItemDTO[] = [];
 
   getAll() : Observable<walletItemDTO[]>{
     var ciao = this.http.get<walletItemDTO[]>(this.apiURL);
@@ -22,27 +38,7 @@ export class WalletService {
     //return [{Id:"abcdefg", Name: "Spesona",Value: 0, Type:"Expense", Category: "", Date: new Date()}];
   }
 
-  // cerca l'item per nome con paginazione
-  getByName(name:string, sortOrder: string, pageNumber: number, pageSize: number) : Observable<walletItemDTO[]>{
-    console.log(`getByName ${name}, ${sortOrder}, ${pageNumber}, ${pageSize}`);
 
-    let path: string;
-    path = `${this.apiURL}/byname/${name}/${sortOrder}/${pageNumber}/${pageSize}`;
-
-    var results = this.http.get<walletItemDTO[]>(path); 
-
-    // var results = this.http.get<walletItemDTO[]>(this.apiURL + '/byname',{
-    //   params: new HttpParams()
-    //     .set('name', name)
-    //     .set('sortOrder', sortOrder)
-    //     .set('pageNumber', pageNumber.toString())
-    //     .set('pageSize', pageNumber.toString())
-    // }); 
-
-    console.log(results);
-    return results; 
-
-  }
 
   getCategories() : Observable<string[]>{
     return this.http.get<string[]>(this.apiURL + '/categories');
@@ -57,6 +53,50 @@ export class WalletService {
     //alert(`${this.apiURL}/${Id}`);
     //return this.http.delete(`${this.apiURL}/${Id}`);
     this.http.delete(`${this.apiURL}/${Id}`).subscribe(() => console.log(`${Id} deleted`));
+  }
+
+  // richiama una pagina di item di portafoglio
+  page(request: PageRequest<walletItemDTO>, query: WalletItemQuery) : Observable<Page<walletItemDTO>>{
+    
+    //let filteredItems = this.items;
+
+//console.log('page: ' + this.apiURL + `/filter/${query.search}`);
+
+
+     this.http.get<walletItemDTO[]>(this.apiURL + `/filter/${query.search ? query.search : "*"}`)
+    .pipe(map(data => {
+      this.filteredItems = data;
+      console.log('page filteredItems');
+      console.log(this.filteredItems);
+    })).subscribe(wallet => {});
+
+    /*
+    // /api/wallet/filter/<ricerca>
+    this.http.get<walletItemDTO[]>(this.apiURL + `/filter/${query.search ? query.search : "*"}`)
+    .subscribe(
+      wallet => {
+        this.filteredItems = wallet;
+        console.log('page filteredItems');
+        console.log(this.filteredItems);
+      });
+*/
+      // ocio che questa viene eseguita priam della subscribe
+    const start = request.page * request.size;
+    const end = start + request.size;
+
+    const pageItems = this.filteredItems.slice(start,end);
+
+    console.log(`pageItems: ${this.apiURL}/filter/${query.search ? query.search : "*"}`);
+    console.log(pageItems);
+    console.log(`start(${start}) stop(${end}) length (${this.filteredItems.length})`);
+    
+    const page = {
+      content: pageItems,
+      number: request.page,
+      size: pageItems.length,
+      totalElements: this.filteredItems.length
+    };
+    return of(page).pipe(delay(500));
   }
 }
 

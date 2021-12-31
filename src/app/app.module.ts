@@ -22,6 +22,22 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatDialogModule } from "@angular/material/dialog";
 import { DialogComponent } from './dialog/dialog.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+
+import { CleaningShiftCalculatorComponent } from './cleaning-shift-calculator/cleaning-shift-calculator.component';
+
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { AppheaderComponent } from './appheader/appheader.component';
+import { FooterComponent } from './footer/footer.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { CurrentWeatherComponent } from './weather/current-weather/current-weather.component';
+
+import { StoreModule } from '@ngrx/store';
+import { locationReducer } from './location-reducer';
+import { NavbarComponent } from './navbar/navbar.component';
+import { HomeBoxesComponent } from './home-boxes/home-boxes.component';
+import { CalendarComponent } from './calendar/calendar.component';
 
 
 @NgModule({
@@ -32,7 +48,16 @@ import { DialogComponent } from './dialog/dialog.component';
     HomeComponent,
     WalletRemoveComponent,
     WalletEditComponent,
-    DialogComponent
+    DialogComponent,
+    SidenavComponent,
+    CleaningShiftCalculatorComponent,
+    AppheaderComponent,
+    FooterComponent,
+    SidebarComponent,
+    CurrentWeatherComponent,
+    NavbarComponent,
+    HomeBoxesComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +72,12 @@ import { DialogComponent } from './dialog/dialog.component';
     MatProgressSpinnerModule,
     MatSortModule,
     MatTableModule,
-    MatDialogModule
+    MatDialogModule,
+    DragDropModule,
+    NgbModule,
+    StoreModule.forRoot({
+      loc: locationReducer
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent],

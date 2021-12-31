@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'app-home',
@@ -7,7 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  loc$: Observable<string>;
+  loc: string = 'milano';
+  constructor(private store: Store<any>) {
+    this.loc$ = store.pipe(select('loc'));
+    this.loc$.subscribe(loc => {
+      this.loc = loc;
+    })
+  }
 
   date: Date = new Date();
 

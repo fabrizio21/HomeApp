@@ -1,0 +1,37 @@
+[
+    {
+      "name": "Lunedì",
+      "index": 1,
+      "selected": true
+    },
+    {
+      "name": "Martedì",
+      "index": 2,
+      "selected": false
+    },
+    {
+      "name": "Mercoledì",
+      "index": 3,
+      "selected": false
+    },
+    {
+      "name": "Giovedì",
+      "index": 4,
+      "selected": false
+    },
+    {
+      "name": "Venerdì",
+      "index": 5,
+      "selected": false
+    },
+    {
+      "name": "Sabato",
+      "index": 6,
+      "selected": false
+    },
+    {
+      "name": "Domenica",
+      "index": 7,
+      "selected": false
+    }
+  ]
